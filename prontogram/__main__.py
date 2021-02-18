@@ -17,7 +17,7 @@ from prontogram.models.message import Message
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = environ.get("FLASK_SECRET_KEY")
-rabbitmq_host = environ.get("RABBITMQ_HOST") or "localhost"
+rabbitmq_host = environ.get("RABBITMQ_HOST")
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 
@@ -84,9 +84,13 @@ def messages():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        return redirect(
-            url_for("messages", pg_username=request.form.get("pg_username"))
-        )
+        un = request.form.get("pg_username") or "not-set"
+        if un == "not-set":
+            return redirect(url_for("login", empty_username=1))
+        else:
+            return redirect(
+                url_for("messages", pg_username=request.form.get("pg_username"))
+            )
     return render_template("login.html")
 
 
@@ -96,4 +100,4 @@ def index():
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="localhost", port="8080")
+    socketio.run(app, host="0.0.0.0", port="8080")
