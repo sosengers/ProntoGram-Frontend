@@ -5,7 +5,7 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from prontogram.models.base_model_ import Model
+from prontogram.models.base_model import Model
 from prontogram import util
 
 
