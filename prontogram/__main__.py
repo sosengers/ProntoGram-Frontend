@@ -5,13 +5,14 @@ from flask import (
     redirect,
     url_for,
 )
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, join_room
 from os import environ
 from threading import Thread, Timer
 import sys
 from json import loads, dumps
 import pika
 from prontogram.models.message import Message
+import logging
 
 # Initialziation of Flask
 
@@ -55,7 +56,7 @@ def queue_selection(
                 print("Sender: {} -- {}".format(msg.sender, msg.send_time))
                 print(msg.body)
                 print("---\n")
-                socketio.send(dumps(json), json=True, room=msg.receiver)
+                socketio.send(dumps(json), json=True, room=pg_username)
 
         channel.queue_declare(queue=pg_username, durable=True)
 
@@ -68,6 +69,10 @@ def queue_selection(
 
 # Flask
 
+@socketio.on('join')
+def on_join(room):
+    join_room(room)
+    #TODO: send(username + ' has entered the room.', room=room)
 
 @app.route("/messages", methods=["GET"])
 def messages():

@@ -11,27 +11,30 @@ $(document).ready(function () {
 
     const params = new URLSearchParams(window.location.search);
     const pg_username = params.get('pg_username');
-
-    socket.emit('room', pg_username);
+        
+    socket.emit('join', pg_username);
 
     socket.on('json', function (json_msg) {
-        if($('#no_messages').length > 0) {
-            $('#no_messages').remove();
-        }
 
         const message = JSON.parse(json_msg);
-        const date = new Date(message.send_time);
-        const day = date.getDate() < 10 ? '0' +date.getDate(): date.getDate();
-        const month = date.getMonth()+1 < 10 ? '0' + (date.getMonth()+1) : date.getMonth()+1;
-        const year = date.getFullYear();
-        const hours = date.getHours() < 10 ? '0' +date.getHours(): date.getHours()
-        const minutes = date.getMinutes() < 10 ? '0' +date.getMinutes(): date.getMinutes();
+        if (message.receiver === pg_username){
+            if($('#no_messages').length > 0) {
+                $('#no_messages').remove();
+            }
 
-        const html = messageTemplate
-            .replace('{{sender}}', message.sender)
-            .replace('{{send_time}}', `${day}/${month}/${year} ${hours}:${minutes}`)
-            .replace('{{body}}', message.body);
+            const date = new Date(message.send_time);
+            const day = date.getDate() < 10 ? '0' +date.getDate(): date.getDate();
+            const month = date.getMonth()+1 < 10 ? '0' + (date.getMonth()+1) : date.getMonth()+1;
+            const year = date.getFullYear();
+            const hours = date.getHours() < 10 ? '0' +date.getHours(): date.getHours()
+            const minutes = date.getMinutes() < 10 ? '0' +date.getMinutes(): date.getMinutes();
 
-        $('#messages').append(html);
+            const html = messageTemplate
+                .replace('{{sender}}', message.sender)
+                .replace('{{send_time}}', `${day}/${month}/${year} ${hours}:${minutes}`)
+                .replace('{{body}}', message.body);
+
+            $('#messages').append(html);
+        }
     });
 });
