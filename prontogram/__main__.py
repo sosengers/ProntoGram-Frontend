@@ -7,12 +7,12 @@ from flask import (
 )
 from flask_socketio import SocketIO, join_room
 from os import environ
-from threading import Thread, Timer
+from threading import Timer
 import sys
 from json import loads, dumps
 import pika
 from prontogram.models.message import Message
-import logging
+from datetime import datetime
 
 # Initialziation of Flask
 
@@ -72,7 +72,8 @@ def queue_selection(
 @socketio.on('join')
 def on_join(room):
     join_room(room)
-    #TODO: send(username + ' has entered the room.', room=room)
+    msg = Message("ProntoGram", room, "Hai effettuato l'accesso a ProntoGram.", datetime.now().isoformat())
+    socketio.send(dumps(msg.to_dict()), json=True, room=room)
 
 @app.route("/messages", methods=["GET"])
 def messages():
