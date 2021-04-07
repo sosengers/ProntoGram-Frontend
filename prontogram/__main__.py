@@ -106,4 +106,6 @@ def index():
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port="8080")
+    host = environ.get("PRONTOGRAM_HOST", "0.0.0.0")
+    port = environ.get("PRONTOGRAM_PORT", "8080")
+    socketio.run(app, host=host, port=port)
