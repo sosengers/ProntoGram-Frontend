@@ -7,7 +7,7 @@ const messageTemplate = "<div class=\"col\">" +
     "</div></div></div>";
 
 $(document).ready(function () {
-    let socket = io.connect('http://0.0.0.0:8000/');
+    let socket = io.connect(prontogramSocket);
 
     const params = new URLSearchParams(window.location.search);
     const pg_username = params.get('pg_username');
