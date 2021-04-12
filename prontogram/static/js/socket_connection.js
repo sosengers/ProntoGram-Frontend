@@ -29,7 +29,7 @@ $(document).ready(function () {
                 .replace('{{send_time}}', date.toLocaleString())
                 .replace('{{body}}', message.body);
 
-            $('#messages').append(html);
+            $('#messages').prepend(html);
         }
     });
 });
