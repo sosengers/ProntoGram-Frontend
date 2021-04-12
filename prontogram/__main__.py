@@ -12,7 +12,7 @@ import sys
 from json import loads, dumps
 import pika
 from prontogram.models.message import Message
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Initialziation of Flask
 
@@ -72,7 +72,7 @@ def queue_selection(
 @socketio.on('join')
 def on_join(room):
     join_room(room)
-    msg = Message("ProntoGram", room, "Hai effettuato l'accesso a ProntoGram.", datetime.now().isoformat())
+    msg = Message("ProntoGram", room, "Hai effettuato l'accesso a ProntoGram.", datetime.now(tz=timezone.utc).isoformat())
     socketio.send(dumps(msg.to_dict()), json=True, room=room)
 
 @app.route("/messages", methods=["GET"])
