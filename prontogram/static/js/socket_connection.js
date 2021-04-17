@@ -11,7 +11,6 @@ $(document).ready(function () {
 
     const params = new URLSearchParams(window.location.search);
     const pg_username = params.get('pg_username');
-        
     socket.emit('join', pg_username);
 
     socket.on('json', function (json_msg) {
@@ -29,7 +28,7 @@ $(document).ready(function () {
                 .replace('{{send_time}}', date.toLocaleString())
                 .replace('{{body}}', message.body);
 
-            $('#messages').prepend(html);
+            $('#messages').append(html);
         }
     });
 });
