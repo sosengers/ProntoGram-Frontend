@@ -8,6 +8,8 @@ const messageTemplate = "<div class=\"col\">" +
 
 $(document).ready(function () {
     const params = new URLSearchParams(window.location.search);
+
+    // If the username was not set in the login page then empty_username is set as query parameter with value 1.
     const empty_username = params.get('empty_username');
 
     $("#pg_username").change(function() {
